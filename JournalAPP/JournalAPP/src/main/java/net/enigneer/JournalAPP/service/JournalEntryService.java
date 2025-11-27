@@ -1,5 +1,6 @@
 package net.enigneer.JournalAPP.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import net.enigneer.JournalAPP.entity.JournalEntry;
+import net.enigneer.JournalAPP.entity.User;
 import net.enigneer.JournalAPP.repository.JournalEntryRepo;
 
 @Service
@@ -17,9 +19,22 @@ public class JournalEntryService {
     @Autowired
     private JournalEntryRepo JournalEntryrepo;
 
-    public JournalEntry saveEntry(JournalEntry journalEntry){
-        return JournalEntryrepo.save(journalEntry);
+    @Autowired
+    private UserService Userservice;
+
+    public void saveEntry(JournalEntry journalEntry,String userName){
+        User user=Userservice.findByUserName(userName);
+        journalEntry.setDate(LocalDateTime.now());
+        JournalEntry saved=JournalEntryrepo.save(journalEntry);
+        user.getJournalEntries().add(saved);
+        Userservice.saveEntry(user);
     }
+
+    public void saveEntry(JournalEntry journalEntry){
+        
+        JournalEntryrepo.save(journalEntry);
+    }
+    
 
     public List<JournalEntry> getAll(){
         return JournalEntryrepo.findAll();
@@ -29,9 +44,11 @@ public class JournalEntryService {
         return JournalEntryrepo.findById(id);
     }
 
-    public boolean deleteById(ObjectId id){
+    public void deleteById(ObjectId id,String userName){
+        User user=Userservice.findByUserName(userName);
+        user.getJournalEntries().removeIf(x->x.getId().equals(id));
+        Userservice.saveEntry(user);
         JournalEntryrepo.deleteById(id);
-        return true;
     }
 
     // public JournalEntry updatebyId(ObjectId id,JournalEntry newEntry){

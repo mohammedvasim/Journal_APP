@@ -32,4 +32,6 @@ build/
 ### VS Code ###
 .vscode/
 
-JournalAPP\JournalAPP\src\main\java\net\enigneer\JournalAPP\controller\HealthCheck.java
+src/main/java/net/enigneer/JournalAPP/controller/HealthCheck.java
+
+

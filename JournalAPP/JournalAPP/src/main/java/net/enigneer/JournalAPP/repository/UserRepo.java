@@ -10,4 +10,5 @@ import net.enigneer.JournalAPP.entity.User;
 public interface UserRepo extends MongoRepository<User,ObjectId>{
 
     User findByUsername(String username);
+    void deleteByUsername(String username);
 }

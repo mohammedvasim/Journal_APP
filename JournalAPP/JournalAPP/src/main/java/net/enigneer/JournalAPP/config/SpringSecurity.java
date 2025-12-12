@@ -27,10 +27,9 @@ public class SpringSecurity {
         return http.authorizeHttpRequests(request ->request
            .requestMatchers("/public/**").permitAll() //Allow public endpoints without auth
            //.requestMatchers("/user/**").permitAll() //Allow user creation without auth (for Testing)
-           //.requestMatchers("/journal/**").authenticated()
-           // .requestMatchers("/admin/**").hasRole("ADMIN")
            .requestMatchers("/journal/**","/user/**").authenticated()
-            .anyRequest().authenticated())
+           .requestMatchers("/admin/**").hasRole("ADMIN")
+            .anyRequest().permitAll())
 
             .httpBasic(Customizer.withDefaults())
             .sessionManagement(session -> session

@@ -32,6 +32,6 @@ build/
 ### VS Code ###
 .vscode/
 
-src/main/java/net/enigneer/JournalAPP/controller/HealthCheck.java
+application.yml
 
 
